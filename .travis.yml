@@ -4,11 +4,11 @@ services:
     - docker
 
 before_install: 
-    - docker build -t TestImage -f Dockerfile.dev .
+    - docker build -t alexgao1995/docker-test -f Dockerfile.dev .
     # build a docker image named "TestImage" using Dockerfile.dev, by doing this we don't need to copy 
     # paste the randomly generated docker id.
 
 script:
-    - docker run -e CI=true TestImage npm run test
+    - docker run -e CI=true alexgao1995/docker-test npm run test
     # run npm test inside the docker image named "TestImage"
     
