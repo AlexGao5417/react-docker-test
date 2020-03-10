@@ -5,10 +5,24 @@ services:
 
 before_install: 
     - docker build -t alexgao1995/docker-test -f Dockerfile.dev .
-    # build a docker image named "TestImage" using Dockerfile.dev, by doing this we don't need to copy 
+    # build a docker image named alexgao1995/docker-test using Dockerfile.dev, by doing this we don't need to copy 
     # paste the randomly generated docker id.
 
 script:
     - docker run -e CI=true alexgao1995/docker-test npm run test
-    # run npm test inside the docker image named "TestImage"
+    # run npm test inside the docker image named alexgao1995/docker-test
     
+deploy:
+    provider: elasticbeanstalk
+    region: "us-east-2"
+    app: "docker-test"
+    env: "DockerTest-env"
+    bucket_name: elasticbeanstalk-us-east-2-011340873836
+    bucket_path: "docker-test"
+    # by default the bucket_path is the same as app's name
+    on:
+        branch: master
+        # only deploy the code in master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key:
+        secure: "$AWS_SECRET_KEY"
