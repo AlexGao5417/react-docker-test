@@ -1,0 +1,23 @@
+version: '3'
+services: 
+    web:
+        build: 
+            context: .
+            # context option can specify where we want all the files and folders for this
+            # image to be pulled from. if we want the current working directory which is the 
+            # directory "docker-compose.yml" exists then we just use " ."
+            dockerfile: Dockerfile.dev
+        ports: 
+            - "3000:3000"
+        volumes: 
+            - app/node_modules
+            - .:/app
+    tests:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            - /app/node_modules
+            - .:/app
+        command: ["npm","run","test"]
+        # override the command inside Dockerfile.dev
